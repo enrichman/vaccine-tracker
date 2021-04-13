@@ -3,6 +3,11 @@
 URL_DATA="https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/anagrafica-vaccini-summary-latest.json"
 TOT_POPULATION="59641488"
 
+if ! [ -x "$(command -v jq)" ]; then
+  echo 'Error: jq is not installed.' >&2
+  exit 1
+fi
+
 FIRST_DOSE=$(curl -s ${URL_DATA} | jq '[.data [].prima_dose] | add')
 FIRST_DOSE_PERCENTAGE=$(echo "scale=2; 100 * ${FIRST_DOSE} / ${TOT_POPULATION}" | bc)
 
