@@ -8,7 +8,8 @@ if ! [ -x "$(command -v jq)" ]; then
   exit 1
 fi
 
-FIRST_DOSE=$(curl -s ${URL_DATA} | jq '[.data [].prima_dose] | add')
+FIRST_DOSE=$(curl -s ${URL_DATA} | jq '[.data [].d1] | add')
+echo $FIRST_DOSE
 FIRST_DOSE_PERCENTAGE=$(echo "scale=2; 100 * ${FIRST_DOSE} / ${TOT_POPULATION}" | bc)
 
 FIR=$(echo "${FIRST_DOSE_PERCENTAGE} * 20 / 100" | bc)
@@ -22,7 +23,7 @@ do
 done
 
 
-SECOND_DOSE=$(curl -s ${URL_DATA} | jq '[.data [].seconda_dose] | add')
+SECOND_DOSE=$(curl -s ${URL_DATA} | jq '[.data [].d2] | add')
 SECOND_DOSE_PERCENTAGE=$(echo "scale=2; 100 * ${SECOND_DOSE} / ${TOT_POPULATION}" | bc)
 
 SEC=$(echo "${SECOND_DOSE_PERCENTAGE} * 20 / 100" | bc)
